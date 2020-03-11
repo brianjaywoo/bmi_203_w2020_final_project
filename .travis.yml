@@ -1,5 +1,5 @@
 # python of course and we don't need access to sudo atm
-language: generic
+language: python
 sudo: false
 
 # emails are annoying
