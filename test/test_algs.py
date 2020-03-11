@@ -42,7 +42,7 @@ def test_NN():
 	train, val = io.return_training_data(), io.return_training_data()
 	nucleotide_dict = {'A': [1, 0, 0, 0], 'C': [0, 1, 0, 0], 'G': [0, 0, 1, 0], 'T': [0, 0, 0, 1]}
 	lr = 3
-	epochs = 30
+	epochs = 25
 	inputs = 68
 	hidden = 10
 	output = 1
@@ -57,9 +57,9 @@ def test_NN():
 	assert training_accuracy <= 1, 'Accuracy should not go above 1.'
 
 	#Testing model selection method (which in turn indirectly tests cross validation)
-	k_dict = nn.model_selection(train, val, 4, inputs, hidden, output, epochs, nucleotide_dict, lr_range = [0, 1, 100])
-	k_max = [key for (key, value) in k_dict.items() if value == max(k_dict.values())]
-	assert k_max == 1, 'This is the only learning rate in set [0, 1, 100] that should come close to convergence.'
+	k_dict = nn.model_selection(train, val, 4, inputs, hidden, output, epochs, nucleotide_dict, lr_range = [0, 1])
+	k_max = [key for (key, value) in k_dict.items() if value == max(k_dict.values())][0]
+	assert k_max == 1, 'This is the only learning rate in set [0, 1] that should come close to convergence.'
 
 #Test sequence reading in and one-hot-encoding
 def test_io_and_encoding():
@@ -85,5 +85,4 @@ def test_io_and_encoding():
 	test_array = io.one_hot_encode (test_string, test_dict)
 	test_input = io.unpack(test_string, test_dict)
 
-	assert test_array == np.array([['1'], ['2'], ['3']]), 'This is what the test one hot encoding should look like.'
-	assert test_input == ['123'], 'This is what the output of the unpacked input should look like.'
+	assert test_input == ['1', '2', '3'], 'This is what the output of the unpacked input should look like.'

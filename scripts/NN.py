@@ -16,6 +16,7 @@ Adapted code from:
 Defining the neuralnetwork class and defining its methods.
 
 """
+
 #Making a NN class with methods for fitting
 class NeuralNetwork:
 	#3 initial attributes: an object with lists
@@ -135,7 +136,7 @@ class NeuralNetwork:
 
 	#For fitting a neural network. conv = threshold for convergence based on validation error.
 	#Need to pass in training and validation datasets.
-	def fit(self, network, l_rate, n_epoch, conv = 1e-5, autoencode = True, nucleotide_dict = [], train = [], val = []):
+	def fit(self, network, l_rate, n_epoch, conv = 1e-6, autoencode = True, nucleotide_dict = [], train = [], val = []):
 		#Ultimate output is errors (by each epoch )
 		errors = []
 		for epoch in range(n_epoch):
@@ -295,7 +296,7 @@ class NeuralNetwork:
 
 	#Wrapper around k-folds CV (model selection), across a range of learning rates.
 	def model_selection(self, train, val, n_folds, n_inputs, n_hidden, n_outputs,
-						n_epoch, nucleotide_dict = [], mode = 'lr', lr_range = [0.5, 1, 1.5, 2]):
+						n_epoch, nucleotide_dict = [], mode = 'lr', lr_range = [0.5, 1, 1.5, 2, 2.5]):
 		#The only 'mode' I currently implemented
 		if mode == 'lr':
 			model_k_score = {}

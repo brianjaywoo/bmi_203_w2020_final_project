@@ -87,6 +87,7 @@ def unpack (input, dict):
 def plot_utility (keys, values, name, title, ylab, xticks, ylim = (0, 1.02)):
 	plt.plot(keys, values, linewidth = 3)
 	plt.xticks(rotation=90)
+	#Setting xticks so that I don't get a mess on the x-axis of each epoch
 	plt.xticks(xticks)
 	plt.title(title)
 	plt.ylim(ylim)

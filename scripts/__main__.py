@@ -110,13 +110,16 @@ elif flow == '-K':
     #Default: 0.5-2, in steps of 0.5 = 4 total. I expect 2 to be too high a learning
     #rate (I am scaling up each step by 2 times), and 0.5 to be too low (I am scaling
     #each step by 1/2.)
+
+    #Train for less epochs here because I want to select for hyperparameters that don't
+    #take forever to train.
     k_fold_dict = nn.model_selection(train, val, n_folds, n_inputs = input_length, n_hidden = n_hidden, n_outputs = n_outputs,
-                        n_epoch = epochs//2, nucleotide_dict = nucleotide_dict)
+                        n_epoch = epochs//4, nucleotide_dict = nucleotide_dict)
 
     #Plot out the mean k-folds cross validation accuracy, by learning rate
     k_keys, k_vals = list(k_fold_dict.keys()), list(k_fold_dict.values())
     plot_utility(k_keys, k_vals, name = 'k_vs_lr.png',
-                title = 'k-fold-val-mean-accuracy by learning rate',
+                title = 'k-fold-val-mean-accuracy by learning rate', xticks = k_keys,
                 ylab = 'mean' + str(n_folds) + '-folds accuracy')
 
     """
@@ -135,7 +138,7 @@ elif flow == '-K':
     nn.make_weights(network = nn.network, n_inputs = input_length, n_hidden = n_hidden, n_outputs = n_outputs)
 
     #Fit using the best learning rate determined from cross-validation experiments
-    nn.fit(nn.network, best_lr, epochs, train = train, val = val, autoencode = False, nucleotide_dict = nucleotide_dict)
+    nn.fit(nn.network, best_lr, epochs * 2, train = train, val = val, autoencode = False, nucleotide_dict = nucleotide_dict)
 
     #For each sequence in test document, output a scalar in the range of (0, 1), where 0 = not bound
     test_predictions = nn.test_predictions(nucleotide_dict = nucleotide_dict)
